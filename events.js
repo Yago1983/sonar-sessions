@@ -5,10 +5,10 @@
   lienDon : lien de paiement Bancontact Pro propre à l'événement (sinon LIEN_DON_GENERAL).
 */
 const SESSIONS = [
-  { photo:"/assets/photos/2026-10-15-jam-affiche.jpg", date:"2026-10-15", serie:"Let's Jam", artiste:"Jam session", groupe:false, lieu:"", heure:"", prix:"Prix libre", lienGroupe:"", lienDon:"" },
+  { photo:"/assets/photos/2027-02-04-jam.jpg", date:"2026-10-15", serie:"Let's Jam", artiste:"Jam session", groupe:false, lieu:"", heure:"", prix:"Prix libre", lienGroupe:"", lienDon:"" },
   { photo:"/assets/photos/2026-11-08-vipers-duo.jpg", date:"2026-11-08", serie:"Let's Swing", artiste:"The Viper's Rhythm Band", groupe:true, lieu:"Brasserie Sauvenière, Liège", heure:"Dès 15h30", prix:"10 €", lienGroupe:"https://thevipersrhythmband.com/", lienDon:"" },
   { photo:"/assets/photos/2026-12-13-sam-gerstmans-trio.jpg", date:"2026-12-13", serie:"Let's Swing", artiste:"Sam Gerstmans Trio", groupe:true, lieu:"Brasserie Sauvenière, Liège", heure:"Dès 15h30", prix:"10 €", lienGroupe:"https://samgerstmans.be/", lienDon:"" },
-  { photo:"", date:"2027-01-22", serie:"Release d'album", artiste:"The Viper's Rhythm Band", groupe:true, lieu:"Brasserie Sauvenière, Liège", heure:"21h", prix:"10 €", lienGroupe:"https://thevipersrhythmband.com/", lienDon:"" },
+  { photo:"/assets/photos/2027-01-22-vipers-rhythm-band.jpg", date:"2027-01-22", serie:"Release d'album", artiste:"The Viper's Rhythm Band", groupe:true, lieu:"Brasserie Sauvenière, Liège", heure:"21h", prix:"10 €", lienGroupe:"https://thevipersrhythmband.com/", lienDon:"" },
   { photo:"/assets/photos/2027-02-04-jam.jpg", date:"2027-02-04", serie:"Let's Jam", artiste:"Jam session", groupe:false, lieu:"Brasserie Sauvenière, Liège", heure:"20h30", prix:"Prix libre", lienGroupe:"", lienDon:"" },
 ];
 const LIENS = [
