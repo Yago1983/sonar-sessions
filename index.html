@@ -306,7 +306,7 @@ const lead = upcoming[0] || past[0];
 if (lead){
   const p = parts(lead.date);
   if (lead.photo){ $("#hero-img").src = lead.photo; $("#hero-img").alt = lead.artiste; }
-  const label = !upcoming.length ? "La dernière Sonar Session" : lead.date === today ? "Ce soir" : "Prochaine Sonar Session";
+  const label = !upcoming.length ? "La dernière Sonar Session" : lead.date === today ? "Aujourd’hui" : "Prochaine Sonar Session";
   $("#hero-copy").innerHTML = `
     <p class="kick rv">${label} · ${esc(lead.serie)}</p>
     <div class="when"><span class="mask rv" style="--d:.1s"><span class="day">${p.d}</span></span><span class="mo rv" style="--d:.25s">${p.ml}<small>${p.j} · ${p.y}</small></span></div>
