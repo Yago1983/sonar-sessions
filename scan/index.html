@@ -67,6 +67,11 @@ body{background:var(--ground);color:var(--text);font:16px/1.5 var(--f);
 .copy{flex:none;border:1px solid var(--rule);background:transparent;color:var(--text);border-radius:6px;padding:6px 10px;font:600 13px var(--f);cursor:pointer}
 .copy:focus-visible{outline:2px solid var(--mauve);outline-offset:2px}
 footer{color:var(--muted);font-size:12px;text-align:center}
+.news{display:flex;flex-direction:column;align-items:center;gap:8px;border-top:1px solid var(--rule);padding-top:20px;text-align:center}
+.news p{margin:0;font-size:14px;color:var(--muted)}
+.newsbtn{display:inline-block;border:1px solid var(--mauve);color:var(--text);text-decoration:none;font-weight:600;font-size:14px;padding:10px 16px;border-radius:6px}
+.newsbtn:hover{background:var(--mauve);color:#fff}
+.newsbtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </style>
 </head>
 <body>
@@ -97,6 +102,11 @@ footer{color:var(--muted);font-size:12px;text-align:center}
       <div class="field" style="margin-top:10px"><span>Communication</span>
         <div class="row"><code id="comm"></code><button class="copy" type="button" data-copy="comm">Copier</button></div></div>
     </div>
+  </section>
+
+  <section class="news" id="news" hidden aria-label="Newsletter">
+    <p>Envie d'être prévenu des prochaines dates ?</p>
+    <a class="newsbtn" id="newsbtn" href="#" target="_blank" rel="noopener">Recevoir les prochaines dates</a>
   </section>
 
   <footer>Sonar Artists ASBL · sonarartists.be</footer>
@@ -154,6 +164,7 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
 }));
 
 render();
+if (typeof LIEN_NEWSLETTER !== "undefined" && LIEN_NEWSLETTER){ document.getElementById("newsbtn").href = LIEN_NEWSLETTER; document.getElementById("news").hidden = false; }
 </script>
 
 </body>
