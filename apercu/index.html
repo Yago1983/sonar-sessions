@@ -76,13 +76,6 @@ img{display:block;max-width:100%}
 @keyframes cue{to{top:110%}}
 @media (max-width:760px){.scrollcue{display:none}}
 
-/* ---------- moving band of words ---------- */
-.ticker{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);overflow:hidden;padding:22px 0;white-space:nowrap}
-.ticker .track{display:inline-flex;will-change:transform}
-.ticker span{font-size:clamp(28px,4.4vw,56px);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;padding-right:.6em;color:transparent;-webkit-text-stroke:1px rgba(246,243,248,.55)}
-.ticker span.f{color:var(--text);-webkit-text-stroke:0}
-.ticker i{display:inline-block;width:.5em;height:.5em;border-radius:50%;background:var(--mauve);margin:0 .7em .12em 0;vertical-align:middle;font-size:clamp(28px,4.4vw,56px)}
-
 /* ---------- coming up: two offset blocks, not a grid of equal cards ---------- */
 .up{padding:110px 0 40px}
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:44px}
@@ -213,14 +206,13 @@ details.don .box p{margin:0 0 8px}
   <div class="scrollcue" aria-hidden="true"></div>
 </section>
 
-<div class="ticker" aria-hidden="true"><div class="track" id="track"></div></div>
 
 <main>
   <section class="up" id="dates" aria-labelledby="t-up">
     <div class="in">
       <div class="head rv">
         <div><p class="kick">Les prochaines dates</p><h2 id="t-up">À venir</h2></div>
-        <p>Toutes nos sessions ont lieu à la Brasserie Sauvenière, en plein centre de Liège.</p>
+        <p>Des concerts et des jams en plein centre de Liège.</p>
       </div>
       <div id="evs"></div>
     </div>
@@ -325,11 +317,6 @@ if (lead){
     </div>`;
 }
 
-/* ticker: series names and artists, repeated */
-const words = [...new Set(list.map(s => s.serie).concat(upcoming.map(s => s.artiste)))];
-const unit = words.map((w,i) => `<span class="${i % 2 ? "" : "f"}">${esc(w)}</span><i></i>`).join("");
-$("#track").innerHTML = unit.repeat(6);
-
 /* coming up */
 const rest = upcoming.slice(1);
 $("#evs").innerHTML = rest.map((s,k) => {
@@ -391,7 +378,7 @@ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting
 document.querySelectorAll(".rv").forEach(el => io.observe(el));
 
 /* scroll-linked motion: parallax, ticker speed, words, top bar */
-const bar = $("#bar"), track = $("#track");
+const bar = $("#bar");
 const heroPh = $("#hero-ph"), yoursPh = $("#yours-ph");
 let lastY = scrollY, tx = 0, vel = 0, ticking = false;
 function frame(){
@@ -418,19 +405,6 @@ function frame(){
 addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive: true });
 addEventListener("resize", frame);
 frame();
-
-/* ticker runs on its own, faster when the page moves */
-if (!reduce){
-  const loop = () => {
-    const w = track.scrollWidth / 6;
-    tx -= .6 + Math.abs(vel) * .25;
-    if (-tx >= w) tx += w;
-    track.style.transform = `translateX(${tx}px)`;
-    vel *= .94;
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
-}
 
 /* past rail: drag with the mouse */
 const rail = $("#rail");
