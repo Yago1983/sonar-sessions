@@ -312,9 +312,8 @@ if (lead){
     <div class="when"><span class="mask rv" style="--d:.1s"><span class="day">${p.d}</span></span><span class="mo rv" style="--d:.25s">${p.ml}<small>${p.j} · ${p.y}</small></span></div>
     <h1><span class="mask rv" style="--d:.3s"><span>${esc(lead.artiste)}</span></span></h1>
     ${infos(lead) ? `<p class="info rv" style="--d:.45s">${infos(lead)}</p>` : ""}
-    <div class="acts rv" style="--d:.55s">
+    ${lead.groupe && lead.lienGroupe ? `<div class="acts rv" style="--d:.55s">` : `<div hidden>`}
       ${lead.groupe && lead.lienGroupe ? `<a class="btn" href="${esc(lead.lienGroupe)}" target="_blank" rel="noopener">Découvrir ${esc(lead.artiste)} <span class="arr">→</span></a>` : ""}
-      <a class="btn ghost" href="#dates">Toutes les dates</a>
     </div>`;
 }
 
