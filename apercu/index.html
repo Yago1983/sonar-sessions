@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sonar Sessions</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Les Sonar Sessions : concerts, jams et sorties d'album organisés par Sonar Artists ASBL. Prochaines dates, dates passées, et organisation de vos événements.">
+<link rel="icon" href="/assets/logo-sonar-sessions.svg">
+<style>
+/* Same visual rules as the validated sonarartists.be mock-up: Montserrat hosted on the site,
+   flat dark ground, mauve used sparingly, almost-square corners, no glow, no gradient. */
+@font-face{font-family:"Montserrat";font-weight:400;font-display:swap;src:url(/assets/fonts/montserrat-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:500;font-display:swap;src:url(/assets/fonts/montserrat-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:600;font-display:swap;src:url(/assets/fonts/montserrat-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(/assets/fonts/montserrat-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Montserrat";font-weight:800;font-display:swap;src:url(/assets/fonts/montserrat-latin-800-normal.woff2) format("woff2")}
+:root{
+  --ground:#141016; --raise:#1d1820; --rule:#33293a;
+  --mauve:#9b62d1; --mauve-d:#8a52c0; --text:#f5f2f7; --muted:#a59cad;
+  --f:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--ground);color:var(--text);font:16px/1.55 var(--f);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.in{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.top{border-bottom:1px solid var(--rule)}
+.top .in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.top img{height:40px;width:auto;display:block}
+.menu{display:flex;gap:24px;font-size:14px;font-weight:600}
+.menu a{text-decoration:none;color:var(--muted)}
+.menu a:hover{color:var(--text)}
+@media (max-width:720px){.menu{display:none}}
+
+/* opening */
+.open{padding-top:64px;padding-bottom:48px}
+.open h1{margin:0;font-size:clamp(34px,6vw,60px);line-height:1.05;font-weight:800;letter-spacing:-.01em}
+.open h1 em{font-style:normal;color:var(--mauve)}
+.open p{margin:18px 0 0;max-width:560px;font-size:18px;color:var(--muted)}
+
+/* section titles */
+section{padding:48px 0;border-top:1px solid var(--rule)}
+h2{margin:0 0 24px;font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* next date, larger */
+.next{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px;align-items:start}
+.next .poster{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--raise);display:block}
+.next .when{font-size:15px;font-weight:600;color:var(--mauve);margin:0}
+.next .artist{margin:6px 0 4px;font-size:clamp(28px,4vw,40px);line-height:1.1;font-weight:800}
+.next .serie{margin:0;color:var(--muted);font-size:15px}
+.next .infos{margin:18px 0 0;font-size:16px}
+.next .acts{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:720px){.next{grid-template-columns:1fr}.next .poster{max-width:320px}}
+
+.btn{display:inline-block;background:var(--mauve);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:11px 18px;border-radius:3px;border:1px solid var(--mauve);white-space:nowrap;cursor:pointer;font-family:var(--f)}
+.btn:hover{background:var(--mauve-d);border-color:var(--mauve-d)}
+.btn.line{background:transparent;color:var(--text);border-color:var(--rule)}
+.btn.line:hover{border-color:var(--mauve);background:transparent}
+
+/* agenda list */
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.list li{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:4px 20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule)}
+.d{line-height:1.1;font-variant-numeric:tabular-nums}
+.d b{display:block;font-size:28px;font-weight:800}
+.d span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.w .s{margin:0;font-size:13px;color:var(--muted)}
+.w .a{margin:0;font-size:19px;font-weight:700;line-height:1.25}
+.w .i{margin:3px 0 0;font-size:14px}
+.past li{padding:12px 0}
+.past .d b{font-size:19px}
+.past .w .a{font-size:16px}
+.empty{color:var(--muted);margin:0;padding:16px 0}
+@media (max-width:520px){.list li{grid-template-columns:62px minmax(0,1fr)}.list .btn{grid-column:2;justify-self:start;margin-top:8px}.d b{font-size:22px}}
+
+/* your event */
+.yours{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}
+.yours h3{margin:0;font-size:clamp(26px,3.6vw,36px);line-height:1.15;font-weight:800}
+.yours p{margin:0 0 14px;color:var(--muted)}
+.yours ul{margin:0 0 22px;padding:0;list-style:none}
+.yours li{padding:9px 0;border-bottom:1px solid var(--rule);font-weight:500}
+.yours li:first-child{border-top:1px solid var(--rule)}
+.contact{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width:720px){.yours{grid-template-columns:1fr;gap:20px}}
+
+/* follow + support */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+.follow{display:flex;flex-wrap:wrap;gap:10px}
+.don p{margin:0 0 12px;color:var(--muted);font-size:15px}
+.paybtn{display:block;text-align:center;margin-bottom:14px}
+.label{display:block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center;background:var(--raise);padding:10px 12px;margin-top:6px;border-radius:3px}
+.row code{flex:1;min-width:0;font:500 14px var(--mono);overflow-wrap:anywhere;user-select:all}
+.copy{flex:none;border:1px solid var(--rule);background:transparent;color:var(--text);border-radius:3px;padding:6px 10px;font:600 13px var(--f);cursor:pointer}
+
+/* newsletter */
+.news{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.news p{margin:0;font-size:17px;font-weight:600}
+
+/* legal footer */
+footer{border-top:1px solid var(--rule);padding:32px 0 calc(40px + env(safe-area-inset-bottom,0px));font-size:13px;color:var(--muted)}
+footer .legal{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:12px}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="in">
+    <a href="/" aria-label="Sonar Sessions, accueil"><img src="/assets/logo-sonar-sessions.svg" alt="Sonar Sessions" width="137" height="40"></a>
+    <nav class="menu" aria-label="Sections">
+      <a href="#dates">Dates</a>
+      <a href="#vos-evenements">Vos événements</a>
+      <a href="#soutenir">Soutenir</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="in open">
+    <h1>De l’idée <em>à la scène.</em></h1>
+    <p>Concerts, jams et sorties d’album : les Sonar Sessions sont les soirées organisées par Sonar Artists.</p>
+  </div>
+
+  <section id="dates" aria-labelledby="t-dates">
+    <div class="in">
+      <h2 id="t-dates">Prochaine date</h2>
+      <div id="next"></div>
+    </div>
+  </section>
+
+  <section id="agenda" aria-labelledby="t-agenda">
+    <div class="in">
+      <h2 id="t-agenda">Ensuite</h2>
+      <ul class="list" id="later"></ul>
+    </div>
+  </section>
+
+  <section id="vos-evenements" aria-labelledby="t-yours">
+    <div class="in yours">
+      <div>
+        <h2 id="t-yours">Vos événements</h2>
+        <h3>Nos événements, ou les vôtres.</h3>
+      </div>
+      <div>
+        <p>Une salle à faire vivre, un festival, une soirée d’entreprise ? On s’en occupe, de la programmation à la réalisation complète.</p>
+        <ul>
+          <li>Choix des artistes et programmation</li>
+          <li>Technique, son et lumière</li>
+          <li>Organisation le jour même</li>
+        </ul>
+        <div class="contact">
+          <a class="btn" href="mailto:info@sonarartists.be?subject=Organisation%20d%27un%20%C3%A9v%C3%A9nement">Nous écrire</a>
+          <a class="btn line" href="tel:+32498624565">+32 498 62 45 65</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="soutenir" aria-labelledby="t-don">
+    <div class="in two">
+      <div class="don">
+        <h2 id="t-don">Soutenir les Sonar Sessions</h2>
+        <a class="btn paybtn" id="paybtn" href="#" target="_blank" rel="noopener" hidden>Faire un don avec Bancontact</a>
+        <p>Chaque don aide à payer les artistes et l’organisation des sessions.</p>
+        <span class="label">Compte (IBAN)</span>
+        <div class="row"><code id="iban"></code><button class="copy" type="button" data-copy="iban">Copier</button></div>
+        <span class="label">Communication</span>
+        <div class="row"><code id="comm">DON SONAR SESSIONS</code><button class="copy" type="button" data-copy="comm">Copier</button></div>
+      </div>
+      <div>
+        <h2>Suivre Sonar</h2>
+        <div class="follow" id="follow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-past">
+    <div class="in">
+      <h2 id="t-past">Déjà passées</h2>
+      <ul class="list past" id="past"></ul>
+    </div>
+  </section>
+
+  <section id="news" hidden aria-label="Newsletter">
+    <div class="in news">
+      <p>Envie d’être prévenu des prochaines dates ?</p>
+      <a class="btn line" id="newsbtn" href="#" target="_blank" rel="noopener">Recevoir les prochaines dates</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="in">
+    <div>Les Sonar Sessions sont organisées par <a href="https://sonarartists.be">Sonar Artists ASBL</a> · N° d’entreprise 0700.273.583 · info@sonarartists.be</div>
+    <nav class="legal" aria-label="Informations légales">
+      <a href="https://sonarartists.be/legal/mentions-legales">Mentions légales</a>
+      <a href="https://sonarartists.be/legal/privacy-policy">Confidentialité</a>
+      <a href="https://sonarartists.be/usage-policy">Conditions d’utilisation</a>
+      <a href="https://sonarartists.be/legal/cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="/events.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const MOIS_L = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const JOURS = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+const today = (() => { const t = new Date(); return new Date(t - t.getTimezoneOffset()*60000).toISOString().slice(0,10); })();
+const list = [...SESSIONS].sort((a,b) => a.date.localeCompare(b.date));
+const upcoming = list.filter(s => s.date >= today);
+const past = list.filter(s => s.date < today).reverse();
+
+function item(s, withInfos){
+  const [y,m,d] = s.date.split("-");
+  const infos = [s.lieu, s.heure, s.prix].filter(Boolean).map(esc).join(" · ");
+  const btn = s.groupe && s.lienGroupe ? `<a class="btn line" href="${esc(s.lienGroupe)}" target="_blank" rel="noopener">Découvrir</a>` : "<span></span>";
+  return `<li><div class="d"><b>${+d}</b><span>${MOIS[+m-1]} ${y}</span></div>
+    <div class="w"><p class="s">Sonar Sessions · ${esc(s.serie)}</p><p class="a">${esc(s.artiste)}</p>${withInfos && infos ? `<p class="i">${infos}</p>` : ""}</div>${btn}</li>`;
+}
+
+if (upcoming.length){
+  const s = upcoming[0];
+  const dt = new Date(s.date + "T12:00:00");
+  const when = `${JOURS[dt.getDay()]} ${dt.getDate()} ${MOIS_L[dt.getMonth()]} ${dt.getFullYear()}`;
+  const infos = [s.lieu, s.heure, s.prix].filter(Boolean).map(esc).join(" · ");
+  $("#next").innerHTML = `<div class="next">
+    <div>
+      <p class="when">${s.date === today ? "Aujourd’hui" : when}</p>
+      <p class="artist">${esc(s.artiste)}</p>
+      <p class="serie">Sonar Sessions · ${esc(s.serie)}</p>
+      ${infos ? `<p class="infos">${infos}</p>` : ""}
+      <div class="acts">${s.groupe && s.lienGroupe ? `<a class="btn" href="${esc(s.lienGroupe)}" target="_blank" rel="noopener">Découvrir ${esc(s.artiste)}</a>` : ""}</div>
+    </div>
+    ${s.affiche ? `<img class="poster" src="${esc(s.affiche)}" alt="Affiche : ${esc(s.artiste)}, ${esc(when)}">` : ""}
+  </div>`;
+  $("#later").innerHTML = upcoming.slice(1).map(s => item(s, true)).join("") || `<li><p class="empty">D’autres dates arrivent bientôt.</p></li>`;
+} else {
+  $("#next").innerHTML = `<p class="empty">Les prochaines dates arrivent bientôt.</p>`;
+  $("#agenda").hidden = true;
+}
+$("#past").innerHTML = past.map(s => item(s, false)).join("");
+$("#follow").innerHTML = LIENS.filter(l => /instagram|facebook/i.test(l.url)).map(l => `<a class="btn line" href="${esc(l.url)}" target="_blank" rel="noopener">${/instagram/i.test(l.url) ? "Instagram" : "Facebook"}</a>`).join("");
+$("#iban").textContent = IBAN;
+if (LIEN_DON_GENERAL){ const p = $("#paybtn"); p.href = LIEN_DON_GENERAL; p.hidden = false; }
+if (typeof LIEN_NEWSLETTER !== "undefined" && LIEN_NEWSLETTER){ $("#newsbtn").href = LIEN_NEWSLETTER; $("#news").hidden = false; }
+
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+  const node = $("#" + b.dataset.copy);
+  const done = () => { b.textContent = "Copié"; setTimeout(() => b.textContent = "Copier", 1400); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents(node); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+  try { navigator.clipboard.writeText(node.textContent).then(done, select); } catch(e){ select(); }
+}));
+</script>
+</body>
+</html>
