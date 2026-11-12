@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/logo-sonar-sessions.svg">
+<title>Sonar Sessions</title>
+<style>
+html,body{margin:0}
+img{max-width:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* Layout: one phone column. Flat dark ground, white type, the logo's mauve used sparingly. Single dark look by choice. */
+:root{
+  --ground:#141016; --raise:#1d1820; --rule:#33293a;
+  --mauve:#9b62d1; --text:#f5f2f7; --muted:#a59cad;
+  --f:"Helvetica Neue",Arial,"Liberation Sans",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--ground);color:var(--text);font:16px/1.5 var(--f);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.lockup{display:block;width:min(260px,72%);height:auto;margin:4px auto 0}
+
+/* event navigation */
+.nav{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-block:10px}
+.nav button{all:unset;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);padding:6px 0;display:flex;gap:6px;align-items:center;white-space:nowrap}
+@media (max-width:360px){.nav button{font-size:12.5px}}
+.nav button[disabled]{opacity:.3;cursor:default}
+.nav button:focus-visible{outline:2px solid var(--mauve);outline-offset:3px;border-radius:4px}
+.nav .arr{color:var(--mauve);font-size:18px;line-height:1}
+
+/* current event */
+.event{display:flex;flex-direction:column;gap:2px}
+.status{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0;display:flex;gap:8px;align-items:center}
+.status.today{color:var(--mauve)}
+.status.today::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--mauve)}
+.serie{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.artist{margin:0;font-size:26px;line-height:1.15;font-weight:700;text-wrap:balance}
+.infos{margin:6px 0 0;font-size:14px;color:var(--text)}
+
+/* links */
+.links{display:flex;flex-direction:column}
+.links a,.links .todo{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--rule);color:var(--text);text-decoration:none;font-weight:600}
+.links a:first-child,.links .todo:first-child{border-top:1px solid var(--rule)}
+.links a:focus-visible{outline:2px solid var(--mauve);outline-offset:2px}
+.links .go{flex:none;background:var(--mauve);color:#fff;font-size:14px;font-weight:700;padding:8px 14px;border-radius:6px;min-width:96px;text-align:center}
+.links a:hover .go{background:#8a52c0}
+.links small{display:block;font-weight:400;font-size:12px;color:#d9a441}
+
+/* donation */
+.don{display:flex;flex-direction:column;gap:12px}
+.don h2{margin:0;font-size:18px}
+.don p{margin:0;font-size:14px;color:var(--muted)}
+.paybtn{display:block;text-align:center;background:var(--mauve);color:#fff;text-decoration:none;font-weight:700;padding:15px;border-radius:8px}
+.paybtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.paybtn[aria-disabled="true"]{opacity:.45;cursor:default}
+.paynote{margin-top:-6px!important;font-size:12px!important;color:#d9a441!important;text-align:center}
+.or{margin-top:4px!important;font-weight:600;color:var(--text)!important}
+.field{display:flex;flex-direction:column;gap:4px}
+.field span{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center;background:var(--raise);border-radius:8px;padding:10px 12px}
+.row code{flex:1;min-width:0;font:500 14px var(--mono);overflow-wrap:anywhere;user-select:all}
+.copy{flex:none;border:1px solid var(--rule);background:transparent;color:var(--text);border-radius:6px;padding:6px 10px;font:600 13px var(--f);cursor:pointer}
+.copy:focus-visible{outline:2px solid var(--mauve);outline-offset:2px}
+footer{color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<img class="lockup" src="/assets/logo-sonar-sessions.svg" alt="Sonar Sessions" width="260" height="76">
+
+
+  <nav class="nav" aria-label="Changer d'événement">
+    <button type="button" id="prev"><span class="arr" aria-hidden="true">←</span>Événement précédent</button>
+    <button type="button" id="next">Prochain événement<span class="arr" aria-hidden="true">→</span></button>
+  </nav>
+
+  <section class="event" id="event" aria-live="polite"></section>
+
+  <div class="links" id="links"></div>
+
+  <section class="don" aria-labelledby="don-t">
+    <h2 id="don-t">Soutenir les Sonar Sessions</h2>
+    <a class="paybtn" id="paybtn" href="#" target="_blank" rel="noopener">Faire un don avec Bancontact</a>
+    <p class="paynote" id="paynote" hidden>Lien de paiement Bancontact à ajouter</p>
+    <p id="don-intro"></p>
+    <p class="or">Ou par virement :</p>
+    <div id="manual">
+      <div class="field"><span>Compte (IBAN)</span>
+        <div class="row"><code id="iban"></code><button class="copy" type="button" data-copy="iban">Copier</button></div></div>
+      <div class="field" style="margin-top:10px"><span>Communication</span>
+        <div class="row"><code id="comm"></code><button class="copy" type="button" data-copy="comm">Copier</button></div></div>
+    </div>
+  </section>
+
+  <footer>Sonar Artists ASBL · sonarartists.be</footer>
+</div>
+
+<script src="/events.js"></script>
+<script>
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = iso => iso.split("-").reverse().join("/");
+const today = (() => { const t = new Date(); return new Date(t - t.getTimezoneOffset()*60000).toISOString().slice(0,10); })();
+const list = [...SESSIONS].sort((a,b) => a.date.localeCompare(b.date));
+
+// Par défaut : l'événement du jour, sinon le dernier passé (sinon le premier à venir).
+let idx = list.reduce((k, s, i) => s.date <= today ? i : k, -1);
+if (idx < 0) idx = 0;
+
+function linkRow(label, url, btn){
+  return url
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener"><span>${esc(label)}</span><span class="go" aria-hidden="true">${esc(btn)}</span></a>`
+    : `<div class="todo"><span>${esc(label)}<small>Lien à compléter</small></span><span class="go" aria-hidden="true">${esc(btn)}</span></div>`;
+}
+
+function render(){
+  const s = list[idx];
+  const status = s.date === today ? `<p class="status today">Aujourd'hui</p>`
+    : s.date < today ? `<p class="status">${idx === list.reduce((k,x,i)=>x.date<=today?i:k,-1) ? "Dernier événement" : "Événement passé"} · ${fmt(s.date)}</p>`
+    : `<p class="status">À venir · ${fmt(s.date)}</p>`;
+  $("#event").innerHTML = `${status}<p class="serie">Sonar Sessions · ${esc(s.serie)}</p><h1 class="artist">${esc(s.artiste)}</h1>${s.date > today ? `<p class="infos">${esc(s.lieu)} · ${esc(s.heure)} · ${esc(s.prix)}</p>` : ""}`;
+
+  $("#links").innerHTML = [...(s.groupe ? [linkRow(`Découvrir ${s.artiste}`, s.lienGroupe, "Découvrir")] : []), ...LIENS.map(l => linkRow(l.label, l.url, l.btn))].join("");
+
+  $("#don-intro").textContent = s.groupe ? `Ton don va à la session du ${fmt(s.date)} avec ${s.artiste}.` : `Ton don va à la ${s.artiste.toLowerCase()} du ${fmt(s.date)}.`;
+  const comm = `DON SONAR SESSIONS ${s.date.slice(8,10)}-${s.date.slice(5,7)} ${s.artiste}`.toUpperCase().slice(0,140);
+  $("#comm").textContent = comm;
+  $("#iban").textContent = IBAN;
+  const pay = $("#paybtn");
+  const lien = s.lienDon || LIEN_DON_GENERAL;
+  if (lien){ pay.href = lien; pay.removeAttribute("aria-disabled"); $("#paynote").hidden = true; }
+  else { pay.removeAttribute("href"); pay.setAttribute("aria-disabled", "true"); $("#paynote").hidden = false; }
+
+  $("#prev").disabled = idx === 0;
+  $("#next").disabled = idx === list.length - 1;
+}
+
+$("#prev").addEventListener("click", () => { if (idx > 0){ idx--; render(); } });
+$("#next").addEventListener("click", () => { if (idx < list.length - 1){ idx++; render(); } });
+
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+  const node = $("#" + b.dataset.copy);
+  const done = () => { b.textContent = "Copié"; setTimeout(() => b.textContent = "Copier", 1400); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents(node); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+  try { navigator.clipboard.writeText(node.textContent).then(done, select); } catch(e){ select(); }
+}));
+
+render();
+</script>
+
+</body>
+</html>

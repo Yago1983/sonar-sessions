@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sonar Sessions</title>
+<meta name="description" content="Les Sonar Sessions : concerts et spectacles organisés par Sonar Artists ASBL. Programme, dates passées et à venir.">
+<link rel="icon" href="/assets/logo-sonar-sessions.svg">
+<style>
+/* Layout: one centered column, flat dark ground, white type, the logo's mauve used sparingly. */
+:root{
+  --ground:#141016; --raise:#1d1820; --rule:#33293a;
+  --mauve:#9b62d1; --text:#f5f2f7; --muted:#a59cad;
+  --f:"Helvetica Neue",Arial,"Liberation Sans",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--ground);color:var(--text);font:16px/1.5 var(--f);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
+header{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+header img{width:min(300px,78%);height:auto}
+.tag{margin:0;color:var(--mauve);font-weight:600;font-size:18px;transform:rotate(-4deg)}
+h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.events{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.events li{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule)}
+.date{font-variant-numeric:tabular-nums;line-height:1.1}
+.date b{display:block;font-size:26px}
+.date span{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.what{min-width:0}
+.serie{margin:0;font-size:13px;color:var(--muted)}
+.artist{margin:0;font-size:19px;font-weight:700;line-height:1.2}
+.infos{margin:2px 0 0;font-size:14px}
+.btn{display:inline-block;background:var(--mauve);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:8px 14px;border-radius:6px;white-space:nowrap}
+.btn:hover{background:#8a52c0}
+.btn:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.past li{grid-template-columns:76px minmax(0,1fr) auto;padding:10px 0}
+.past .date b{font-size:18px}
+.past .artist{font-size:16px}
+.empty{color:var(--muted);padding:14px 0;margin:0}
+
+.follow{display:flex;flex-wrap:wrap;gap:10px}
+.don p{margin:0 0 10px;color:var(--muted);font-size:15px}
+.row{display:flex;gap:8px;align-items:center;background:var(--raise);border-radius:8px;padding:10px 12px;margin-top:6px}
+.row code{flex:1;min-width:0;font:500 14px var(--mono);overflow-wrap:anywhere;user-select:all}
+.copy{flex:none;border:1px solid var(--rule);background:transparent;color:var(--text);border-radius:6px;padding:6px 10px;font:600 13px var(--f);cursor:pointer}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:10px;display:block}
+.paybtn{display:block;text-align:center;margin-bottom:12px;padding:14px}
+footer{color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--rule);padding-top:20px}
+footer a{color:var(--text)}
+@media (max-width:420px){.events li{grid-template-columns:62px minmax(0,1fr)}.events .btn{grid-column:2;justify-self:start;margin-top:6px}.date b{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/assets/logo-sonar-sessions.svg" alt="Sonar Sessions" width="300" height="88">
+    <p class="tag">De l’idée à la scène</p>
+  </header>
+
+  <section aria-labelledby="t-next">
+    <h2 id="t-next">Prochaines dates</h2>
+    <ul class="events" id="next"></ul>
+  </section>
+
+  <section aria-labelledby="t-follow">
+    <h2 id="t-follow">Suivre Sonar</h2>
+    <div class="follow" id="follow"></div>
+  </section>
+
+  <section class="don" aria-labelledby="t-don">
+    <h2 id="t-don">Soutenir les Sonar Sessions</h2>
+    <a class="btn paybtn" id="paybtn" href="#" target="_blank" rel="noopener" hidden>Faire un don avec Bancontact</a>
+    <p>Chaque don aide à payer les artistes et l’organisation des sessions.</p>
+    <span class="label">Compte (IBAN)</span>
+    <div class="row"><code id="iban"></code><button class="copy" type="button" data-copy="iban">Copier</button></div>
+    <span class="label">Communication</span>
+    <div class="row"><code id="comm">DON SONAR SESSIONS</code><button class="copy" type="button" data-copy="comm">Copier</button></div>
+  </section>
+
+  <section aria-labelledby="t-past">
+    <h2 id="t-past">Déjà passées</h2>
+    <ul class="events past" id="past"></ul>
+  </section>
+
+  <footer>Les Sonar Sessions sont organisées par <a href="https://sonarartists.be">Sonar Artists ASBL</a>.</footer>
+</div>
+
+<script src="/events.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const today = (() => { const t = new Date(); return new Date(t - t.getTimezoneOffset()*60000).toISOString().slice(0,10); })();
+const list = [...SESSIONS].sort((a,b) => a.date.localeCompare(b.date));
+
+function item(s, upcoming){
+  const [y,m,d] = s.date.split("-");
+  const infos = [s.lieu, s.heure, s.prix].filter(Boolean).map(esc).join(" · ");
+  const btn = s.groupe && s.lienGroupe ? `<a class="btn" href="${esc(s.lienGroupe)}" target="_blank" rel="noopener">Découvrir</a>` : "<span></span>";
+  return `<li><div class="date"><b>${+d}</b><span>${MOIS[+m-1]} ${y}</span></div>
+    <div class="what"><p class="serie">Sonar Sessions · ${esc(s.serie)}</p><p class="artist">${esc(s.artiste)}</p>${upcoming && infos ? `<p class="infos">${infos}</p>` : ""}</div>${btn}</li>`;
+}
+
+const next = list.filter(s => s.date >= today);
+const past = list.filter(s => s.date < today).reverse();
+$("#next").innerHTML = next.length ? next.map(s => item(s, true)).join("") : `<li><p class="empty">Les prochaines dates arrivent bientôt.</p></li>`;
+$("#past").innerHTML = past.map(s => item(s, false)).join("");
+$("#follow").innerHTML = LIENS.filter(l => /instagram|facebook/i.test(l.url)).map(l => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${/instagram/i.test(l.url) ? "Instagram" : "Facebook"}</a>`).join("");
+$("#iban").textContent = IBAN;
+if (LIEN_DON_GENERAL){ const p = $("#paybtn"); p.href = LIEN_DON_GENERAL; p.hidden = false; }
+
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+  const node = $("#" + b.dataset.copy);
+  const done = () => { b.textContent = "Copié"; setTimeout(() => b.textContent = "Copier", 1400); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents(node); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+  try { navigator.clipboard.writeText(node.textContent).then(done, select); } catch(e){ select(); }
+}));
+</script>
+</body>
+</html>
