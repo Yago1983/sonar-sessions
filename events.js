@@ -22,3 +22,11 @@ const LIEN_DON_GENERAL = "https://pay.bancontact.net/t/1/6afd8442eb50db8e223abb0
 /* lienDon : lien de paiement (ex. Bancontact Pro). Vide = on affiche le compte à copier. */
 // Formulaire Brevo « Sonar Sessions - Prochaines dates » (liste B, double confirmation)
 const LIEN_NEWSLETTER = "https://a6c91df1.sibforms.com/serve/MUIFACmn5wgT2v_yXXq08RS406osw01RMf8qUoOTh86e0vrt4J-hNwgrW8Dg7Q83zmUuosIi2jzeP3XQoPcbg8wzx2MJFCLGkNAe2lQYhxsBfveUIrvhBY6NKHmbGWiFgi_I89bGWZVYdRHppbRk6ISkGYfizR-zRVfy_3j6Vx3hWqtsINaYRE_3VWr8x36-1dDY-U3nUcu__-gzPQ==";
+
+// Sur Android, on demande directement au téléphone d'ouvrir une app de paiement (Bancontact, Belfius, KBC…)
+// au lieu de passer par la page web de Bancontact, qui revient en arrière. Sur iPhone, le lien normal suffit.
+function lienPaiement(url){
+  if (!url || !/Android/i.test(navigator.userAgent)) return url;
+  const u = new URL(url);
+  return "intent://" + u.host + u.pathname + u.search + "#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url=" + encodeURIComponent(url) + ";end";
+}

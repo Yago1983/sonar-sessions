@@ -285,7 +285,7 @@ details.don .box p{margin:0 0 8px}
   </div>
 </footer>
 
-<script src="/events.js?v=20261118-1245"></script>
+<script src="/events.js?v=20261118-1310"></script>
 <script>
 document.documentElement.classList.add("js");
 const $ = s => document.querySelector(s);
@@ -356,7 +356,7 @@ $("#lines").innerHTML = lines.map(([u,t,s],i) => `<a class="line rv" style="--d:
 
 /* donation */
 $("#iban").textContent = IBAN;
-if (LIEN_DON_GENERAL){ const b = $("#paybtn"); b.href = LIEN_DON_GENERAL; b.hidden = false; }
+if (LIEN_DON_GENERAL){ const b = $("#paybtn"); b.href = lienPaiement(LIEN_DON_GENERAL); b.hidden = false; }
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
   const node = $("#" + b.dataset.copy);
   const done = () => { b.textContent = "Copié"; setTimeout(() => b.textContent = "Copier", 1400); };

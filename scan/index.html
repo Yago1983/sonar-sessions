@@ -112,7 +112,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
   <footer>Sonar Artists ASBL · sonarartists.be</footer>
 </div>
 
-<script src="/events.js?v=20261118-1245"></script>
+<script src="/events.js?v=20261118-1310"></script>
 <script>
 
 const $ = s => document.querySelector(s);
@@ -146,7 +146,7 @@ function render(){
   $("#iban").textContent = IBAN;
   const pay = $("#paybtn");
   const lien = s.lienDon || LIEN_DON_GENERAL;
-  if (lien){ pay.href = lien; pay.removeAttribute("aria-disabled"); $("#paynote").hidden = true; }
+  if (lien){ pay.href = lienPaiement(lien); pay.removeAttribute("aria-disabled"); $("#paynote").hidden = true; }
   else { pay.removeAttribute("href"); pay.setAttribute("aria-disabled", "true"); $("#paynote").hidden = false; }
 
   $("#prev").disabled = idx === 0;
