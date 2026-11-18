@@ -95,7 +95,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
     <a class="paybtn" id="paybtn" href="#">Faire un don avec Bancontact</a>
     <p class="paynote" id="paynote" hidden>Lien de paiement Bancontact à ajouter</p>
     <p id="don-intro"></p>
-    <p class="or">Ou par virement :</p>
+    <p class="or" id="or">Ou par virement :</p>
     <div id="manual">
       <div class="field"><span>Compte (IBAN)</span>
         <div class="row"><code id="iban"></code><button class="copy" type="button" data-copy="iban">Copier</button></div></div>
@@ -112,7 +112,7 @@ footer{color:var(--muted);font-size:12px;text-align:center}
   <footer>Sonar Artists ASBL · sonarartists.be</footer>
 </div>
 
-<script src="/events.js?v=20261118-1310"></script>
+<script src="/events.js?v=20261118-1315"></script>
 <script>
 
 const $ = s => document.querySelector(s);
@@ -146,8 +146,8 @@ function render(){
   $("#iban").textContent = IBAN;
   const pay = $("#paybtn");
   const lien = s.lienDon || LIEN_DON_GENERAL;
-  if (lien){ pay.href = lienPaiement(lien); pay.removeAttribute("aria-disabled"); $("#paynote").hidden = true; }
-  else { pay.removeAttribute("href"); pay.setAttribute("aria-disabled", "true"); $("#paynote").hidden = false; }
+  if (lien){ $("#or").textContent = "Ou par virement :"; pay.hidden = false; pay.href = lienPaiement(lien); pay.removeAttribute("aria-disabled"); $("#paynote").hidden = true; }
+  else { pay.hidden = true; $("#paynote").hidden = true; $("#or").textContent = "Par virement :"; }
 
   $("#prev").disabled = idx === 0;
   $("#next").disabled = idx === list.length - 1;
