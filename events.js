@@ -18,7 +18,7 @@ const LIENS = [
   { label:"Tous les événements Sonar", url:"https://sonarsessions.sonarartists.be/", btn:"Voir" },
 ];
 const IBAN = "BE56 1030 5642 6988";  // Crelan, Sonar Artists ASBL
-const LIEN_DON_GENERAL = "https://pay.bancontact.net/t/1/6afd8442eb50db8e223abb05?D=Don%20Sonar%20Sessions&R=DON%20SONAR%20SESSIONS";  // lien Bancontact Pro (montant libre) utilisé si l'événement n'a pas le sien
+const LIEN_DON_GENERAL = "https://pay.bancontact.net/t/1/6afd8442eb50db8e223abb05?A=1000&D=Don%20Sonar%20Sessions&R=DON%20SONAR%20SESSIONS";  // lien Bancontact Pro (10 €) utilisé si l'événement n'a pas le sien
 /* lienDon : lien de paiement (ex. Bancontact Pro). Vide = on affiche le compte à copier. */
 // Formulaire Brevo « Sonar Sessions - Prochaines dates » (liste B, double confirmation)
 const LIEN_NEWSLETTER = "https://a6c91df1.sibforms.com/serve/MUIFACmn5wgT2v_yXXq08RS406osw01RMf8qUoOTh86e0vrt4J-hNwgrW8Dg7Q83zmUuosIi2jzeP3XQoPcbg8wzx2MJFCLGkNAe2lQYhxsBfveUIrvhBY6NKHmbGWiFgi_I89bGWZVYdRHppbRk6ISkGYfizR-zRVfy_3j6Vx3hWqtsINaYRE_3VWr8x36-1dDY-U3nUcu__-gzPQ==";
